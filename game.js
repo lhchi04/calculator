@@ -2,9 +2,10 @@ let num1;
 let num2;
 let operator;
 let result;
+let calculation;
 
 function add(num1, num2) {
-  return num1 + num2;
+  return (num1 + num2);
 }
 
 function subtract(num1, num2) {
@@ -20,6 +21,13 @@ function divide(num1, num2) {
     return 'Dummy~';
   }
   return num1 / num2;
+}
+
+function roundDecimal(num) {
+  if (Number.isInteger(num)) {
+    return num;
+  }
+  return num
 }
 
 function operate(operator, num1, num2) {
@@ -53,7 +61,16 @@ buttons.forEach(button => button.addEventListener('click', () => {
       clear();
       curDisplay.textContent = '';
     }
-    curDisplay.textContent += button.textContent;
+    if (button.textContent === '.') {
+      if (curDisplay.textContent.includes('.')) {
+      }
+      else {
+        curDisplay.textContent += button.textContent;
+      }
+    }
+    else {
+      curDisplay.textContent += button.textContent;
+    }
   }
   else if (button.className === 'operator') {
     if (afterDisplay.textContent === num1.toString() + operator) { // Press operator button before getting result
@@ -61,13 +78,12 @@ buttons.forEach(button => button.addEventListener('click', () => {
         clear();
       }
       else {
-        num2 = parseInt(curDisplay.textContent);
+        num2 = Number(curDisplay.textContent);
         result = operate(operator, num1, num2);
         curDisplay.textContent = result;
       }
     }
-    
-    num1 = parseInt(curDisplay.textContent);
+    num1 = Number(curDisplay.textContent);
     operator = button.textContent;
     afterDisplay.textContent = curDisplay.textContent + operator;
     curDisplay.textContent = ''; 
@@ -83,10 +99,15 @@ buttons.forEach(button => button.addEventListener('click', () => {
       if (afterDisplay.textContent === '-') {  // Press minus operator first then a number
         num1 = 0;
       }
-      num2 = parseInt(curDisplay.textContent);
+      num2 = Number(curDisplay.textContent);
       result = operate(operator, num1, num2);
       afterDisplay.textContent += curDisplay.textContent; 
       curDisplay.textContent = result;
+    }
+  }
+  else if (button.className === 'delete') {
+    if (curDisplay.textContent !== '') {
+      curDisplay.textContent = curDisplay.textContent.slice(0, curDisplay.textContent.length-1);
     }
   }
   else {
